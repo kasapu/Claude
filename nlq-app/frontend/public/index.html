@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Natural Language Query - AI-Powered SQL Generation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="header-content">
+                <h1>🤖 Natural Language Query</h1>
+                <p class="subtitle">Transform your questions into SQL queries instantly</p>
+            </div>
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="queryCount">0</span>
+                    <span class="stat-label">Queries</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="avgTime">0s</span>
+                    <span class="stat-label">Avg Time</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Database Connection Section -->
+            <section class="card connection-card">
+                <h2>📊 Database Connection</h2>
+
+                <div class="form-group">
+                    <label for="dbType">Database Type</label>
+                    <select id="dbType" class="form-control">
+                        <option value="postgresql">PostgreSQL</option>
+                        <option value="mysql">MySQL</option>
+                        <option value="snowflake">Snowflake</option>
+                        <option value="databricks">Databricks</option>
+                    </select>
+                </div>
+
+                <div id="connectionFields">
+                    <!-- PostgreSQL/MySQL fields (default) -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="host">Host</label>
+                            <input type="text" id="host" class="form-control" placeholder="localhost">
+                        </div>
+                        <div class="form-group">
+                            <label for="port">Port</label>
+                            <input type="text" id="port" class="form-control" placeholder="5432">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="database">Database</label>
+                            <input type="text" id="database" class="form-control" placeholder="analytics">
+                        </div>
+                        <div class="form-group">
+                            <label for="user">User</label>
+                            <input type="text" id="user" class="form-control" placeholder="analyst">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" class="form-control" placeholder="••••••••">
+                    </div>
+                </div>
+
+                <button id="testConnection" class="btn btn-secondary">Test Connection</button>
+                <span id="connectionStatus" class="status-indicator"></span>
+            </section>
+
+            <!-- Query Section -->
+            <section class="card query-card">
+                <h2>💬 Ask Your Question</h2>
+
+                <div class="form-group">
+                    <textarea
+                        id="queryInput"
+                        class="form-control query-input"
+                        placeholder="e.g., What was our customer acquisition cost by channel last quarter?"
+                        rows="3"
+                    ></textarea>
+                </div>
+
+                <div class="button-group">
+                    <button id="executeQuery" class="btn btn-primary">
+                        <span class="btn-icon">🚀</span> Generate & Execute SQL
+                    </button>
+                    <button id="generateOnly" class="btn btn-secondary">
+                        <span class="btn-icon">📝</span> Generate SQL Only
+                    </button>
+                </div>
+
+                <!-- Example Queries -->
+                <div class="examples-section">
+                    <h3>💡 Example Questions</h3>
+                    <div id="exampleQueries" class="example-chips"></div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section id="resultsSection" class="card results-card" style="display: none;">
+                <h2>📈 Results</h2>
+
+                <!-- Metadata -->
+                <div class="result-metadata">
+                    <div class="metadata-item">
+                        <span class="metadata-label">Complexity:</span>
+                        <span id="complexity" class="badge">Medium</span>
+                    </div>
+                    <div class="metadata-item">
+                        <span class="metadata-label">Execution Time:</span>
+                        <span id="executionTime">0.00s</span>
+                    </div>
+                    <div class="metadata-item">
+                        <span class="metadata-label">Rows:</span>
+                        <span id="rowCount">0</span>
+                    </div>
+                </div>
+
+                <!-- Explanation -->
+                <div class="explanation-section">
+                    <h3>📖 Explanation</h3>
+                    <p id="explanation" class="explanation-text"></p>
+                </div>
+
+                <!-- SQL Query -->
+                <div class="sql-section">
+                    <div class="sql-header">
+                        <h3>💻 Generated SQL</h3>
+                        <button id="copySQL" class="btn btn-sm">Copy</button>
+                    </div>
+                    <pre id="sqlQuery" class="sql-code"></pre>
+                </div>
+
+                <!-- Assumptions -->
+                <div id="assumptionsSection" class="assumptions-section" style="display: none;">
+                    <h3>⚠️ Assumptions</h3>
+                    <ul id="assumptions"></ul>
+                </div>
+
+                <!-- Data Table -->
+                <div id="dataSection" class="data-section" style="display: none;">
+                    <div class="table-header">
+                        <h3>📊 Query Results</h3>
+                        <button id="exportCSV" class="btn btn-sm">Export CSV</button>
+                    </div>
+                    <div class="table-container">
+                        <table id="resultsTable" class="data-table"></table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Loading Indicator -->
+            <div id="loadingIndicator" class="loading-overlay" style="display: none;">
+                <div class="loading-spinner"></div>
+                <p>Processing your query...</p>
+            </div>
+
+            <!-- Error Section -->
+            <section id="errorSection" class="card error-card" style="display: none;">
+                <h2>❌ Error</h2>
+                <p id="errorMessage"></p>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <p>Powered by Claude AI | Democratizing Data Access for 80% of Your Workforce</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
